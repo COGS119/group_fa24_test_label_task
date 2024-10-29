@@ -8,6 +8,7 @@
   <script src="https://unpkg.com/@jspsych/plugin-audio-button-response@2.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-text@2.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-preload@2.0.0"></script>
+  <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
   <link href="https://unpkg.com/jspsych@8.0.0/css/jspsych.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -54,6 +55,11 @@
     ]
   };
   timeline.push(preload);
+
+  const random_id = jsPsych.randomization.randomID(10);
+  const filename = `${subject_id}.csv`;
+
+  jsPsych.data.addProperties({random_id: random_id});
 
   // define welcome message trial
   var welcome = {
@@ -204,6 +210,16 @@
     timeline.push(test, feedback)
 
   }
+
+//send the data to 
+  const save_data = {
+  type: jsPsychPipe,
+  action: "save",
+  experiment_id: "RQRGM3M22HGV",
+  filename: filename,
+  data_string: ()=>jsPsych.data.get().csv()
+};
+  timeline.push(save_data);
 
   // start the experiment
   jsPsych.run(timeline);
